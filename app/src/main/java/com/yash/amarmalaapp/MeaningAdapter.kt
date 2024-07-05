@@ -1,6 +1,7 @@
 package com.yash.amarmalaapp
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.yash.amarmalaapp.databinding.MeaningRecyclerRowBinding
@@ -12,7 +13,28 @@ class MeaningAdapter(private var meaningList: List<Meaning>) : RecyclerView.Adap
             //binding meanings
             binding.partOfSpeechTv.text = meaning.partOfSpeech
             binding.definationsTv.text = meaning.definitions.joinToString("\n\n") {
-                it.definition.toString()
+                var currentIndex = meaning.definitions.indexOf(it)
+                (currentIndex+1).toString()+". "+it.definition.toString()
+            }
+
+            if(meaning.synonyms.isEmpty()){
+                binding.synonymsTitleTv.visibility = View.GONE
+                binding.synonymsTv.visibility = View.GONE
+            }
+            else{
+                binding.synonymsTitleTv.visibility = View.VISIBLE
+                binding.synonymsTv.visibility = View.VISIBLE
+                binding.synonymsTv.text = meaning.synonyms.joinToString(", ")
+            }
+
+            if(meaning.antonyms.isEmpty()){
+                binding.antonymsTitleTv.visibility = View.GONE
+                binding.antonymsTv.visibility = View.GONE
+            }
+            else{
+                binding.antonymsTitleTv.visibility = View.VISIBLE
+                binding.antonymsTv.visibility = View.VISIBLE
+                binding.antonymsTv.text = meaning.synonyms.joinToString(", ")
             }
         }
     }
