@@ -3,6 +3,7 @@ package com.yash.amarmalaapp
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -39,13 +40,22 @@ class MainActivity : AppCompatActivity() {
 
         setInProgress(true)
         GlobalScope.launch {
-            val response = RetrofitInstance.dictionaryApi.getMeaning(word)
 
-            runOnUiThread {
-                setInProgress(false)
+            try {
+                val response = RetrofitInstance.dictionaryApi.getMeaning(word)
 
-                response.body()?.first()?.let{
-                    setUI(it)
+                runOnUiThread {
+                    setInProgress(false)
+
+                    response.body()?.first()?.let{
+                        setUI(it)
+                    }
+                }
+
+            }catch (e : Exception){
+                runOnUiThread{
+                    setInProgress(false)
+                    Toast.makeText(applicationContext, "Something went wrong!", Toast.LENGTH_SHORT).show()
                 }
             }
 
